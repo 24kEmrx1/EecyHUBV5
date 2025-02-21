@@ -1,5 +1,6 @@
 local EecyHUB1740155766 = {};
-EecyHUB1740155766["1"] = Instance.new("ScreenGui", game:GetService("CoreGui").RobloxGui);
+local DRAG_GUI = true
+EecyHUB1740155766["1"] = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer.PlayerGui);
 EecyHUB1740155766["1"]["Name"] = [[EecyHUB]];
 EecyHUB1740155766["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
 EecyHUB1740155766["2"] = Instance.new("Frame", EecyHUB1740155766["1"]);
@@ -250,8 +251,7 @@ local relativePosition = math.clamp((input.Position.X - sliderFrame.AbsolutePosi
 local steppedValue = math.round(min + (max - min) * relativePosition)
 slider.Position = UDim2.new((steppedValue - min) / (max - min), 0, slider.Position.Y.Scale, 0)
 if progressBar then
-progressBar.Size = UDim2.new((steppedValue - min) / (max - min), 0, progressBar.Size.Y.Scale, 0)
-end
+progressBar.Size = UDim2.new((steppedValue - min) / (max - min), 0, progressBar.Size.Y.Scale, 0)end
 script.Parent.Parent.Parent.Title1.Text = "Speed - " .. steppedValue
 script.Parent.Parent.Parent.Parent.Parent.LocalScript.Configuration.Speed.Value = steppedValue
 script.Parent.Parent.Parent.Parent.Parent.Parent.Configuration.Speed.Value = steppedValue;end
@@ -260,14 +260,50 @@ if input.UserInputType == Enum.UserInputType.MouseButton1 then
 local moveConnection
 moveConnection = game:GetService("UserInputService").InputChanged:Connect(function(moveInput)
 if moveInput.UserInputType == Enum.UserInputType.MouseMovement then
+DRAG_GUI = false
 update(moveInput)end;end)
 local releaseConnection
 releaseConnection = game:GetService("UserInputService").InputEnded:Connect(function(endInput)
 if endInput.UserInputType == Enum.UserInputType.MouseButton1 then
+DRAG_GUI = true
 moveConnection:Disconnect()
 releaseConnection:Disconnect()
 end;end)end;end)end;
 task.spawn(C_1e);
+local function Clloll()
+local script = EecyHUB1740155766["22"];
+local UIS = game:GetService("UserInputService")
+local Frame = script.Parent.Parent
+local dragToggle = nil
+local dragSpeed = 0.75
+local easingStyle = Enum.EasingStyle.Quint
+local easingDirection = Enum.EasingDirection.Out
+local dragInput = nil
+local dragStart = nil
+local startPos = nil
+local dragPos = nil
+local function updateInput(input)
+local Delta = input.Position - dragStart
+local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+game:GetService("TweenService"):Create(Frame, TweenInfo.new(dragSpeed,easingStyle,easingDirection), {Position = Position}):Play()end
+Frame.InputBegan:Connect(function(input)
+if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
+dragToggle = true
+dragStart = input.Position
+startPos = Frame.Position
+input.Changed:Connect(function()
+if not DRAG_GUI then return end;
+if input.UserInputState == Enum.UserInputState.End then
+dragToggle = false;end;end)end;end)
+Frame.InputChanged:Connect(function(input)
+if not DRAG_GUI then return end;
+if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+dragInput = input;end;end)
+UIS.InputChanged:Connect(function(input)
+if not DRAG_GUI then return end;
+if input == dragInput and dragToggle then
+updateInput(input)end;end)end
+task.spawn(Clloll);
 local function C_22()
 local script = EecyHUB1740155766["22"];
 local player = game.Players.LocalPlayer
