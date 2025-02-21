@@ -1,5 +1,5 @@
 local EecyHUB1740155766 = {};
-EecyHUB1740155766["1"] = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"));
+EecyHUB1740155766["1"] = Instance.new("ScreenGui", game:GetService("CoreGui").RobloxGui);
 EecyHUB1740155766["1"]["Name"] = [[EecyHUB]];
 EecyHUB1740155766["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
 EecyHUB1740155766["2"] = Instance.new("Frame", EecyHUB1740155766["1"]);
